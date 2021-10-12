@@ -35,11 +35,14 @@ func NewService() *Service {
 	repo := repo.NewReop(db)
 
 	userService := services.NewUserService(repo)
+	authService := services.NewAuthService()
 
 	userHandler := handlers.NewUserHandler(userService)
+	authHandler := handlers.NewAuthHandler(userService, authService)
 
 	v1Api := s.Router.Group("/api/v1")
 	v1Api.POST("/user/sign-up", ginext.WrapHandler(userHandler.SignUp))
+	v1Api.POST("/auth/login", ginext.WrapHandler(authHandler.Login))
 
 	// Metadata
 	migrate := handlers.NewMigrationHandler(db)
