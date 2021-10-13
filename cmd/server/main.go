@@ -23,6 +23,7 @@ func main() {
 	_ = os.Setenv("DB_PASS", conf.LoadEnv().DBPass)
 	_ = os.Setenv("DB_NAME", conf.LoadEnv().DBName)
 	_ = os.Setenv("ENABLE_DB", conf.LoadEnv().EnableDB)
+	_ = os.Setenv("SECRET_KEY", conf.LoadEnv().SecretKey)
 
 	logger.Init(APPNAME)
 

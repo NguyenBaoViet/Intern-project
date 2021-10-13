@@ -1,7 +1,7 @@
 package services
 
 import (
-	"Intern-project/pkg/utils"
+	"Intern-project/conf"
 	"fmt"
 	"time"
 
@@ -27,7 +27,7 @@ func (s *AuthService) GenJWT(user_id *uuid.UUID) (string, error) {
 	claims["iss"] = "TokenWithUserID"
 	claims["user_id"] = user_id.String()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString([]byte(utils.SecretKey))
+	signedToken, err := token.SignedString([]byte(conf.LoadEnv().SecretKey))
 	if err != nil {
 		return "", err
 	}
