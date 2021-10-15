@@ -4,6 +4,7 @@ import (
 	"Intern-project/conf"
 	"Intern-project/pkg/route"
 	"context"
+	"fmt"
 	"os"
 
 	"gitlab.com/goxp/cloud0/logger"
@@ -25,6 +26,8 @@ func main() {
 	_ = os.Setenv("ENABLE_DB", conf.LoadEnv().EnableDB)
 	_ = os.Setenv("SECRET_KEY", conf.LoadEnv().SecretKey)
 
+	fmt.Println(conf.LoadEnv().SecretKey)
+
 	logger.Init(APPNAME)
 
 	app := route.NewService()
@@ -33,6 +36,5 @@ func main() {
 	if err != nil {
 		logger.Tag("main").Error(err)
 	}
-
 	os.Clearenv()
 }

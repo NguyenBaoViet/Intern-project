@@ -14,7 +14,7 @@ type AppConfig struct {
 
 	EnableDB string `env:"ENABLE_DB" envDefault:"true"`
 
-	SecretKey string `env:"SECRET_KEY" envDefault:""`
+	SecretKey string `env:"SECRET_KEY"`
 }
 
 var config AppConfig

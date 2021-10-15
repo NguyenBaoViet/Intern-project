@@ -4,8 +4,10 @@ import (
 	"Intern-project/pkg/handlers"
 	"Intern-project/pkg/repo"
 	"Intern-project/pkg/services"
+	"Intern-project/pkg/utils"
 
 	"github.com/caarlos0/env"
+	"github.com/gin-gonic/gin"
 	"gitlab.com/goxp/cloud0/ginext"
 	"gitlab.com/goxp/cloud0/service"
 )
@@ -35,16 +37,18 @@ func NewService() *Service {
 	repo := repo.NewReop(db)
 
 	userService := services.NewUserService(repo)
-	authService := services.NewAuthService()
+	authService := services.NewAuthService(repo)
 
-	userHandler := handlers.NewUserHandler(userService)
+	//userHandler := handlers.NewUserHandler(userService)
 	authHandler := handlers.NewAuthHandler(userService, authService)
 
 	v1Api := s.Router.Group("/api/v1")
-	v1Api.POST("/user/sign-up", ginext.WrapHandler(userHandler.SignUp))
+	v1Api.Use(gin.LoggerWithFormatter(utils.Middleware_logger))
+	v1Api.POST("/auth/sign-up", ginext.WrapHandler(authHandler.SignUp))
 	v1Api.POST("/auth/login", ginext.WrapHandler(authHandler.Login))
+	v1Api.GET("/auth/userinfo", ginext.WrapHandler(authHandler.GetUserInfo))
 
-	// Metadata
+	// migration
 	migrate := handlers.NewMigrationHandler(db)
 	s.Router.POST("/internal/migrate", migrate.Migrate)
 	return s

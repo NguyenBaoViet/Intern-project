@@ -13,6 +13,7 @@ type Repo struct {
 type IRepo interface {
 	CheckEmailExist(email string) (*model.User, error)
 	CreateUser(user *model.User) (*model.User, error)
+	GetUserByID(id string) (*model.User, error)
 }
 
 func NewReop(db *gorm.DB) IRepo {
@@ -35,4 +36,12 @@ func (rp *Repo) CreateUser(user *model.User) (*model.User, error) {
 		return nil, err
 	}
 	return user, nil
+}
+
+func (rp *Repo) GetUserByID(id string) (*model.User, error) {
+	rs := &model.User{}
+	if err := rp.DB.Where("id = ?", id).First(rs).Error; err != nil {
+		return nil, err
+	}
+	return rs, nil
 }

@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"Intern-project/pkg/model"
 	"Intern-project/pkg/services"
-	"net/http"
 
 	"gitlab.com/goxp/cloud0/ginext"
 )
@@ -16,13 +14,13 @@ type IUserHandler interface {
 	SignUp(c *ginext.Request) (*ginext.Response, error)
 }
 
-func NewUserHandler(sv services.IUserService) IUserHandler {
+/* func NewUserHandler(sv services.IUserService) IUserHandler {
 	return &UserHandler{
 		Service: sv,
 	}
-}
+} */
 
-func (uh *UserHandler) SignUp(c *ginext.Request) (*ginext.Response, error) {
+/* func (uh *UserHandler) SignUp(c *ginext.Request) (*ginext.Response, error) {
 	//get request
 	req := model.UserRequest{}
 	c.MustBind(&req)
@@ -34,3 +32,4 @@ func (uh *UserHandler) SignUp(c *ginext.Request) (*ginext.Response, error) {
 	}
 	return ginext.NewResponseData(http.StatusOK, rs), nil
 }
+*/
