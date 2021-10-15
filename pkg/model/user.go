@@ -16,4 +16,13 @@ type (
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
+
+	ChangePassword struct {
+		Password    string `json:"password"`
+		NewPassword string `json:"new-password"`
+	}
+
+	DeleteRequest struct {
+		Password string `json:"password"`
+	}
 )

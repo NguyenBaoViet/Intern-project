@@ -47,6 +47,8 @@ func NewService() *Service {
 	v1Api.POST("/auth/sign-up", ginext.WrapHandler(authHandler.SignUp))
 	v1Api.POST("/auth/login", ginext.WrapHandler(authHandler.Login))
 	v1Api.GET("/auth/userinfo", ginext.WrapHandler(authHandler.GetUserInfo))
+	v1Api.PUT("/auth/change-password", ginext.WrapHandler(authHandler.ChangePassword))
+	v1Api.DELETE("/auth/delete-account", ginext.WrapHandler(authHandler.DeleteUser))
 
 	// migration
 	migrate := handlers.NewMigrationHandler(db)

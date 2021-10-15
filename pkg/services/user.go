@@ -15,6 +15,9 @@ type UserService struct {
 type IUserService interface {
 	SignUp(email, password string) (*model.User, error)
 	CheckUserPassword(email string, password string) (*model.User, error)
+	GetUserInfo(id string) (*model.User, error)
+	ChangePassword(id string, newPW string, oldPW string) error
+	DeleteAccount(id string, PW string) error
 }
 
 func NewUserService(rp repo.IRepo) IUserService {
@@ -66,4 +69,46 @@ func (us *UserService) CheckUserPassword(email string, password string) (*model.
 		return nil, fmt.Errorf("wrong password")
 	}
 	return user, nil
+}
+
+func (us *UserService) GetUserInfo(id string) (*model.User, error) {
+	user, err := us.Repo.GetUserByID(id)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (us *UserService) ChangePassword(id string, newPW string, oldPW string) error {
+	user, err := us.Repo.GetUserByID(id)
+	if err != nil {
+		return err
+	}
+
+	if utils.CheckPasswordHash(oldPW, user.Password) {
+		PW, err := utils.HashPassword(newPW)
+		if err != nil {
+			return err
+		}
+		err = us.Repo.UpdateUser(id, PW)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (us *UserService) DeleteAccount(id string, PW string) error {
+	user, err := us.Repo.GetUserByID(id)
+	if err != nil {
+		return err
+	}
+	if utils.CheckPasswordHash(PW, user.Password) {
+		err = us.Repo.DeleteUser(id)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

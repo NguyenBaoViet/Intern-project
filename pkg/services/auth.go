@@ -2,7 +2,6 @@ package services
 
 import (
 	"Intern-project/conf"
-	"Intern-project/pkg/model"
 	"Intern-project/pkg/repo"
 	"fmt"
 	"strings"
@@ -14,19 +13,15 @@ import (
 )
 
 type AuthService struct {
-	Repo repo.IRepo
 }
 
 type IAuthService interface {
 	GenJWT(user_id *uuid.UUID) (string, error)
 	CheckJWT(c *ginext.Request) (string, error)
-	GetUserInfo(id string) (*model.User, error)
 }
 
 func NewAuthService(rp repo.IRepo) IAuthService {
-	return &AuthService{
-		Repo: rp,
-	}
+	return &AuthService{}
 }
 
 func (s *AuthService) GenJWT(user_id *uuid.UUID) (string, error) {
@@ -68,12 +63,4 @@ func (s *AuthService) CheckJWT(c *ginext.Request) (string, error) {
 
 	rs := claims["user_id"].(string)
 	return rs, nil
-}
-
-func (s *AuthService) GetUserInfo(id string) (*model.User, error) {
-	user, err := s.Repo.GetUserByID(id)
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
 }
