@@ -42,7 +42,10 @@ func (us *UserService) SignUp(email, password string) (*model.User, error) {
 	}
 
 	//hashpassword
-	hashedPassword, _ := utils.HashPassword(password)
+	hashedPassword, err := utils.HashPassword(password)
+	if err != nil {
+		return nil, err
+	}
 	//create user
 	newUser := &model.User{
 		Email:    email,
