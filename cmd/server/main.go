@@ -1,11 +1,12 @@
 package main
 
 import (
-	"Intern-project/conf"
-	"Intern-project/pkg/route"
 	"context"
 	"fmt"
 	"os"
+
+	"cr-adapter-service/conf"
+	"cr-adapter-service/pkg/route"
 
 	"gitlab.com/goxp/cloud0/logger"
 )
